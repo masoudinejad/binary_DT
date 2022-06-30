@@ -1,6 +1,6 @@
 class Node:
     #> init method
-    def __init__(self, node_ID):
+    def __init__(self, node_ID, class_dist):
         #* Node ID is necessary
         self.node_ID = node_ID
         #+ Unknown leaf status
@@ -12,8 +12,8 @@ class Node:
         self.feature = -1
         #+ No threshold is available yet
         self.threshold = float("nan")
-        #+ Distribution of classes are not known 
-        self.class_dist = []
+        #* Distribution of classes is an essential element of a node (empty list possible but does not make sense) 
+        self.class_dist = class_dist
         #+ Sample ID of the original data
         self.samples = []
         
@@ -27,9 +27,9 @@ class Node:
         self.l_child = l_child
         self.r_child = r_child
         
-    #> Setting the distribution of samples in each class
-    def set_class_dist(self, class_dist):
-        self.class_dist = class_dist
+    # #> Setting the distribution of samples in each class
+    # def set_class_dist(self, class_dist):
+    #     self.class_dist = class_dist
     
     #> Set the list of samples ID which landed in this node
     def set_sample_list(self, samples):
@@ -44,7 +44,14 @@ class Node:
         self.is_leaf = True
         
     #> Making an inner-node
-    def make_inner_node(self, feature, threshold):
+    def make_inner_node(self, feature, threshold, l_child, r_child, samples):
+        #* Set the split data
+        self.set_split(self, feature, threshold)
+        #* Set children data
+        self.set_children(l_child, r_child)
+        #! adding the samples list is optional
+        #* Set the sample list
+        self.set_sample_list(samples)
         #* Set the status to inner node
         self.set_inner()
         
