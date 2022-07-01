@@ -2,11 +2,17 @@ from Tree import BinaryDT
 from Node import *
 
 from sklearn import tree
-from sklearn.datasets import load_iris
-iris = load_iris()
-X, y = iris.data, iris.target
 
-clf = tree.DecisionTreeClassifier()
+#from sklearn.datasets import load_iris 
+#X, y = load_iris(return_X_y=True)
+
+#from sklearn.datasets import load_breast_cancer 
+#X, y = load_breast_cancer(return_X_y=True)
+
+from sklearn.datasets import load_digits
+X, y = load_digits(return_X_y=True)
+
+clf = tree.DecisionTreeClassifier(max_depth = 4)
 clf = clf.fit(X, y)
 
 #print(clf.tree_.value[1])
@@ -26,12 +32,11 @@ for node_idx in range(num_nodes):
     my_DT.append_node(current_node)
 
 
-#current_data = 55
-#yhat1 = clf.predict(X[current_data:current_data+1])
-#print(yhat1)
-#yhat2 = my_DT.predict(X[current_data:current_data+1])
-#print(yhat2)
+#yhat1 = clf.predict(X)
+#yhat2 = my_DT.predict(X)
+#print(yhat1 - yhat2)
 
-yhat1 = clf.predict(X)
-yhat2 = my_DT.predict(X)
-print(yhat1 - yhat2)
+p1 = clf.score(X, y)
+print(p1)
+p2 = my_DT.score(X, y)
+print(p2)

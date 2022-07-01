@@ -25,7 +25,14 @@ class BinaryDT:
     
     #> Predict for the whole data
     def predict(self, X):
-        y = np.zeros(len(X), dtype=int)
+        yhat = np.zeros(len(X), dtype=int)
         for idx in range(len(X)):
-            y[idx] = self.predict_single(X[idx])
-        return y
+            yhat[idx] = self.predict_single(X[idx])
+        return yhat
+    
+    #> Get the score of the tree
+    def score(self, X, y):
+        yhat = self.predict(X)
+        currect_estimation = sum(1 for n in yhat - y if n == 0) 
+        performance = currect_estimation / (len(y))
+        return performance
