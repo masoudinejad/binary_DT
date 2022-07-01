@@ -2,7 +2,7 @@ from Node import *
 class BinaryDT:
     #> init method
     def __init__(self, num_nodes):
-        nodes_list = [] * num_nodes
+        self.nodes_list = [[]] * num_nodes
     
     #> Append a node to the tree
     def append_node(self, node_class):
@@ -23,4 +23,9 @@ class BinaryDT:
         y_hat = current_node.get_class()
         return y_hat
     
-    
+    #> Predict for the whole data
+    def predict(self, X):
+        y = np.zeros(len(X), dtype=int)
+        for idx in range(len(X)):
+            y[idx] = self.predict_single(X[idx])
+        return y

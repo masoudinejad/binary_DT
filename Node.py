@@ -45,22 +45,22 @@ class Node:
         self.is_leaf = True
 
     #> Making an inner-node
-    def make_inner_node(self, feature, threshold, l_child, r_child, samples):
+    def make_inner_node(self, feature, threshold, l_child, r_child):#, samples):
         #* Set the split data
-        self.set_split(self, feature, threshold)
+        self.set_split(feature, threshold)
         #* Set children data
         self.set_children(l_child, r_child)
         #! adding the samples list is optional (change it to that)
         #* Set the sample list
-        self.set_sample_list(samples)
+        #self.set_sample_list(samples)
         #* Set the status to inner node
         self.set_inner()
 
     #> Making a leaf
-    def make_leaf_node(self, samples):
+    def make_leaf_node(self): #, samples):
         #! adding the samples list is optional (change it to that)
         #* Set the sample list
-        self.set_sample_list(samples)
+        #self.set_sample_list(samples)
         #* Set the status to inner node
         self.set_leaf()
     
