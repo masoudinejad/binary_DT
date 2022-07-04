@@ -41,7 +41,12 @@ class BinaryDT:
     #> Store model as JSON
     def store_tree(self, store_path):
         #* convert all nodes to dictionary
-        tree_dict_list = [self.nodes_list[i].to_dict() for i in range(len(self.nodes_list))]
+        # tree_dict_list = [self.nodes_list[i].to_dict() for i in range(len(self.nodes_list))]
+        tree_dict_list = []
+        for i in range(len(self.nodes_list)):
+            if isinstance(self.nodes_list[i], Node):
+                # print(F"converting node {i}")
+                tree_dict_list.append(self.nodes_list[i].to_dict())
         with open(store_path, 'w') as fout:
             json.dump(tree_dict_list , fout, indent = 4)
 

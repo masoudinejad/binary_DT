@@ -1,6 +1,4 @@
-# from Tree import *
 import Tree as dtr
-# from Node import *
 
 from sklearn import tree
 
