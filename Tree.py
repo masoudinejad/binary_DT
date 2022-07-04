@@ -44,7 +44,18 @@ class BinaryDT:
         tree_dict_list = [self.nodes_list[i].to_dict() for i in range(len(self.nodes_list))]
         with open(store_path, 'w') as fout:
             json.dump(tree_dict_list , fout, indent = 4)
-            
+
+#> Read a json model and build the tree from it
+def read_model(model_path):
+    with open(model_path, 'r') as fin:
+        in_dict_list = json.load(fin)
+    num_nodes = len(in_dict_list)
+    my_DT = BinaryDT(num_nodes)
+    for in_dict in in_dict_list:
+        current_node = from_dict(in_dict)
+        my_DT.append_node(current_node)
+    return my_DT
+
 #> Building tree from a sklearn model
 def from_sklearn(model):
     children_left = model.tree_.children_left
