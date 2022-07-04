@@ -36,3 +36,20 @@ class BinaryDT:
         currect_estimation = sum(1 for n in yhat - y if n == 0) 
         performance = currect_estimation / (len(y))
         return performance
+    
+#> Building tree from a sklearn model
+def from_sklearn(model):
+    children_left = model.tree_.children_left
+    children_right = model.tree_.children_right
+
+    num_nodes = model.tree_.node_count
+    my_DT = BinaryDT(num_nodes)
+    for node_idx in range(num_nodes):
+        current_node = Node(node_idx, model.tree_.value[node_idx])
+        #* check leaf status
+        if children_left[node_idx] != children_right[node_idx]: # it is split
+            current_node.make_inner_node(model.tree_.feature[node_idx], model.tree_.threshold[node_idx], children_left[node_idx], children_right[node_idx])
+        else: # it is leaf 
+            current_node.make_leaf_node()
+        my_DT.append_node(current_node)
+    return my_DT
