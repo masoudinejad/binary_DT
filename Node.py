@@ -14,7 +14,7 @@ class Node:
         #+ No threshold is available yet
         self.threshold = float("nan")
         #* Distribution of classes is an essential element of a node (empty list possible but does not make sense) 
-        self.class_dist = class_dist
+        self.class_dist = class_dist.astype(int)
         #+ Sample ID of the original data
         self.samples = []
 
@@ -68,3 +68,25 @@ class Node:
     def get_class(self):
         y_hat = np.argmax(self.class_dist)
         return y_hat
+    
+    #> Making dict for storage as json
+    def to_dict(self):
+        node_dict = {"ID": int(self.node_ID),
+                     "leaf": self.is_leaf,
+                     "feat": int(self.feature),
+                     "thre": float(self.threshold),
+                     "left": int(self.l_child),
+                     "right": int(self.r_child),
+                     "dist": self.class_dist.tolist()
+        }
+        return node_dict
+    
+#> Making dict from a json
+def from_dict(in_dict):
+    current_node = Node(in_dict["ID"], np.array(in_dict["dist"]))
+    current_node.is_leaf = in_dict["leaf"]
+    current_node.feature = in_dict["feat"]
+    current_node.threshold = in_dict["thre"]
+    current_node.l_child = in_dict["left"]
+    current_node.r_child = in_dict["right"]
+    return current_node

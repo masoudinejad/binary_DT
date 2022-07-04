@@ -1,4 +1,5 @@
 from Node import *
+import json
 class BinaryDT:
     #> init method
     def __init__(self, num_nodes):
@@ -36,7 +37,14 @@ class BinaryDT:
         currect_estimation = sum(1 for n in yhat - y if n == 0) 
         performance = currect_estimation / (len(y))
         return performance
-    
+
+    #> Store model as JSON
+    def store_tree(self, store_path):
+        #* convert all nodes to dictionary
+        tree_dict_list = [self.nodes_list[i].to_dict() for i in range(len(self.nodes_list))]
+        with open(store_path, 'w') as fout:
+            json.dump(tree_dict_list , fout, indent = 4)
+            
 #> Building tree from a sklearn model
 def from_sklearn(model):
     children_left = model.tree_.children_left
@@ -45,7 +53,7 @@ def from_sklearn(model):
     num_nodes = model.tree_.node_count
     my_DT = BinaryDT(num_nodes)
     for node_idx in range(num_nodes):
-        current_node = Node(node_idx, model.tree_.value[node_idx])
+        current_node = Node(node_idx, model.tree_.value[node_idx][0])
         #* check leaf status
         if children_left[node_idx] != children_right[node_idx]: # it is split
             current_node.make_inner_node(model.tree_.feature[node_idx], model.tree_.threshold[node_idx], children_left[node_idx], children_right[node_idx])
